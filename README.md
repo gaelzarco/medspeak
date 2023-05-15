@@ -1,38 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
+<img src='https://readmeimg.s3.us-west-2.amazonaws.com/medspeakbanner.png' width='100%'>
 
-## Getting Started
+<img src='https://img.shields.io/github/commit-activity/m/gaelzarco/medspeak?style=plastic' alt='Commits per Month'>
 
-First, run the development server:
+<div align='center'>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+<img src='https://img.shields.io/badge/NextJS-NextJS/?logo=nextdotjs&color=black' alt='NextJS'>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<img src="https://img.shields.io/badge/TypeScript-TypeScript/?logo=typescript&color=black" alt="TypeScript">
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+<img src='https://img.shields.io/badge/Tailwind-Tailwind/?logo=tailwindcss&color=black' alt= 'Tailwind CSS'>
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+<img src='https://img.shields.io/badge/Prisma-Prisma/?logo=prisma&color=black' alt='Prisma'>
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<img src='https://img.shields.io/badge/PlanetScale-PlanetScale/?logo=planetscale&color=black' alt='PlanetScale'>
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+<img src='https://img.shields.io/badge/MySQL-MySQL/?logo=mysql&color=black' alt='MySQL'>
 
-## Learn More
+<img src='https://img.shields.io/badge/s3-s3/?logo=amazons3&color=black' alt='s3'>
 
-To learn more about Next.js, take a look at the following resources:
+</div>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<!-- # [Moxie](https://moxie-x.vercel.app) -->
+# MedSpeak
+#### Streamline doctor and patient communication. 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+#### LabLabAI - Create Your Own AI Start-Up: Episode 3
 
-## Deploy on Vercel
+## Creators
+To learn more about our project, please feel free to contact us!
+  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+✧ [Gael Zarco](https://github.com/gaelzarco) ✧
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+✧ [Chris James Galacgac](https://www.linkedin.com/in/crisjames-galacgac/) ✧
+
+
+</div>
