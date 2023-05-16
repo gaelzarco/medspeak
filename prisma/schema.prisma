@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Organization {
+  id            String     @id @default(cuid())  @unique
+  name          String
+  patients      Patient[]
+  medicalProfessionals      MedicalProfessional[]
+  createdAt       DateTime    @default(now())
+}
+
+model MedicalProfessional {
+  id            String       @id @default(cuid())   @unique
+  organizationId  String
+  googleId      String      @unique
+  createdAt       DateTime     @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  organization Organization  @relation(fields: [organizationId], references: [id])
+  @@index([organizationId])
+}
+
+model Patient {
+  id            String    @id @default(cuid())    @unique
+  organizationId  String
+  medicalProfessionalId   String
+  firstName          String
+  lastName        String
+  disease        String
+  mentalHealth       String
+  drugs        String
+  procedures        String
+  anatomy        String
+  other      String
+  documents   Document[]
+  createdAt       DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  @@index([organizationId])
+}
+
+model Document {
+  id            String    @id @default(cuid())    @unique
+  title     String
+  authorId      String
+  patientId    String   
+  createdAt      DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  patient Patient @relation(fields: [patientId], references: [id])
+  @@index([patientId])
+}
