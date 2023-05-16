@@ -7,13 +7,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const form = req.body
+  console.log(form)
+  // const transcript = await getTranscript(audioFile)  
 
-  const title = form.title as string
-  const audioFile = form.recording as File
-
-  console.log(title)
-
-  const transcript = await getTranscript(audioFile)  
-
-  res.send({ transcript })
+  // res.send({ transcript })
 }
