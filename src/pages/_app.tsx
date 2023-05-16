@@ -2,10 +2,11 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
+import { SessionProvider } from "next-auth/react"
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <> 
     <Head>
@@ -17,9 +18,11 @@ export default function App({ Component, pageProps }: AppProps) {
       <link apple-touch-icon='apple-touch-icon' sizes='180x180' href='/favicons/apple-touch-icon.png' />
     </Head>
     
-    <div className={`cursor-default flex h-full w-full flex-col items-center mx-auto ${inter.className}`}>
-      <Component {...pageProps} />
-    </div>
+    <SessionProvider session={session}>
+      <div className={`cursor-default flex h-full w-full flex-col items-center mx-auto ${inter.className}`}>
+        <Component {...pageProps} />
+      </div>
+    </SessionProvider>
     </>
   )
 }
