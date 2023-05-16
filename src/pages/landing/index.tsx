@@ -16,7 +16,7 @@ export default function Landing() {
                     </h1>
 
                     <div className='inline-flex mt-5'>
-                        <button className="bg-transparent border border-neutral-700 hover:border-neutral-600 w-[150px] text-white font-bold py-2 px-4 mr-2 rounded-full"
+                        <button className="bg-transparent border border-neutral-700 hover:border-neutral-600 w-[150px] text-white font-bold py-2 px-4 mr-2 rounded-lg"
                             onClick={() => signIn('google', { callbackUrl: 'http://localhost:3000/' })}
                         >
                             Try it now

@@ -10,7 +10,7 @@ export default function Navbar() {
     const { data: session } = useSession()
 
     return (
-        <nav className="inline-flex justify-between p-4 w-full items-center">
+        <nav className="inline-flex justify-between p-4 pt-7 w-full items-center">
             <div className="inline-flex justify-self-start font-semibold text-md">
                 {session?.user && (
                     <div className="inline-flex items-center">
@@ -24,7 +24,7 @@ export default function Navbar() {
                                 <ChevronDownIcon className="ml-4 h-4 w-4" />
                             </DropdownMenuTrigger>
 
-                            <DropdownMenuContent className="border-neutral-800">
+                            <DropdownMenuContent className="bg-black border-neutral-800">
                                 <DropdownMenuItem className="hover:bg-neutral-900">
                                     <div className="inline-flex items-center justify-between w-full h-full">
                                         <p>My Account</p>
