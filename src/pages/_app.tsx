@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import { SessionProvider } from "next-auth/react"
+import Navbar from '@/components/navbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,6 +21,12 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     
     <SessionProvider session={session}>
       <div className={`cursor-default flex h-full w-full flex-col items-center mx-auto ${inter.className}`}>
+        {session && (
+          <div className='sticky z-1 top-0 w-full max-w-7xl'>
+            <Navbar />
+          </div>
+        )}
+
         <Component {...pageProps} />
       </div>
     </SessionProvider>

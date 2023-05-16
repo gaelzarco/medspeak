@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/dropdown-menu"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
   import { ChevronDownIcon, PersonIcon, ExitIcon } from "@radix-ui/react-icons"
 
@@ -10,9 +10,9 @@ export default function Navbar() {
     const { data: session } = useSession()
 
     return (
-        <div className="inline-flex justify-between p-4 w-full items-center">
+        <nav className="inline-flex justify-between p-4 w-full items-center">
             <div className="inline-flex justify-self-start font-semibold text-md">
-                {session && session.user && (
+                {session?.user && (
                     <div className="inline-flex items-center">
                         <DropdownMenu>
                             <DropdownMenuTrigger className="inline-flex w-max items-center my-auto focus-visible:outline-none">
@@ -42,14 +42,15 @@ export default function Navbar() {
                     </div>
                 )}
             </div>
+            
             <div className="inline-flex justify-self-right text-sm">
-                <Link className='ps-8' href="dashboard">
+                <Link className='ps-8' href="/">
                     <p>Dashboard</p>
                 </Link>
-                <Link className='ps-8' href='analytics'>
+                <Link className='ps-8' href='/analytics'>
                     <p>Analytics</p>
                 </Link>
             </div>
-        </div>
+        </nav>
     )
 }
