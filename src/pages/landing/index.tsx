@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { signIn } from 'next-auth/react'
 
 export default function Landing() {
     return (
@@ -15,11 +16,10 @@ export default function Landing() {
                     </h1>
 
                     <div className='inline-flex mt-5'>
-                        <button className="bg-transparent border border-neutral-700 hover:border-neutral-600 w-[150px] text-white font-bold py-2 px-4 mr-2 rounded-full">
+                        <button className="bg-transparent border border-neutral-700 hover:border-neutral-600 w-[150px] text-white font-bold py-2 px-4 mr-2 rounded-full"
+                            onClick={() => signIn('google', { callbackUrl: 'http://localhost:3000/' })}
+                        >
                             Try it now
-                        </button>
-                        <button className="bg-neutral-900 hover:bg-neutral-800 w-[150px] text-white font-bold py-2 px-4 rounded-full">
-                            Log-in
                         </button>
                     </div>
                 </div>
