@@ -10,7 +10,7 @@ export default function Navbar() {
     const { data: session } = useSession()
 
     return (
-        <nav className="inline-flex justify-between p-4 pt-7 w-full items-center">
+        <nav className="inline-flex justify-between p-4 pt-7 pb-7 w-full items-center bg-black">
             <div className="inline-flex justify-self-start font-semibold text-md">
                 {session?.user && (
                     <div className="inline-flex items-center">
