@@ -1,42 +1,39 @@
 import { type FormEvent, useState } from 'react'
 import type { NextPageContext } from 'next'
 import { getSession } from 'next-auth/react'
-import { useMutation } from '@tanstack/react-query'
-import { useAudioRecorder } from 'react-audio-voice-recorder'
-import { MagicWandIcon, CircleIcon } from '@radix-ui/react-icons'
-
-type DocForm = {
-    title: string
-    recording: File | null
-}
+import { CheckIcon } from '@radix-ui/react-icons'
 
 export default function NewDoc() {
-    const audioRecorder = useAudioRecorder()
-    const [ docForm, setDocForm ] = useState<DocForm>({
-        title: '',
-        recording: null
-    })
+    const [ audioFile, setAudioFile ] = useState<File | null>(null)
 
-    const addRecording = (blob: Blob) => {
-        const audioFile = new File([blob], 'recording.mp3', { type: 'file' })
-        
-        setDocForm({ ...docForm, recording: audioFile })
-    }
-
-    const mutation = useMutation({
-        mutationFn: (event: FormEvent) => {
-            event.preventDefault()
-            let formData = new FormData()
-            formData.set('title', docForm.title)
-            formData.set('recording', docForm.recording as File)
-            return fetch('/api/whisper', {
-                method: 'POST',
-                body: formData
-            })
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files && event.target.files[0];
+        if (file) {
+            setAudioFile(file);
         }
-    })
+    };
 
-    console.log(docForm)
+    const handleSubmit = async (event: FormEvent) => {
+        event.preventDefault();
+      
+        if (!audioFile) throw new Error('No audio file found');
+      
+        const formData = new FormData();
+        formData.append('audioFile', audioFile);
+      
+        const response = await fetch('/api/whisper', {
+          method: 'POST',
+          body: formData,
+        });
+      
+        const data = await response.json();
+      
+        if (data.success) {
+          console.log(data);
+        } else {
+          console.log(data);
+        }
+      };
 
      return (
         <div className="flex flex-col w-full max-w-7xl p-5">
@@ -45,77 +42,46 @@ export default function NewDoc() {
                 <p className='text-sm'>This is where the magic happens. Simply provide a title for this document and begin recording the conversation between you and a patient. We use OpenAI&apos;s Whisper API to generate a transcript of the conversaiton. When you are done, just hit the record button again and make sure to include a title. Then, make sure you review the new document and finally, submit 🚀</p>
             </div>
 
-            <form className='flex flex-col justify-between w-full' onSubmit={mutation.mutate}>
-                <div className='flex flex-row w-full'>
-                    <input 
-                        name='docTitle'
-                        type='text'
-                        placeholder='Document Title'
-                        className='bg-transparent border border-neutral-700 hover:border-neutral-600 rounded-lg w-full mr-2 h-10 px-5 text-sm outline-none'
-                        onChange={(event) => {
-                            setDocForm({ ...docForm, title: event.target.value })
-                        }}
-                    />
-                    {!audioRecorder.isRecording ? (
-                        <button
-                        className="text-sm h-min inline-flex items-center content-center justify-center border border-neutral-700 hover:border-neutral-600 min-w-[200px] py-2 px-4 rounded-lg"
-                        onClick={(event) => {
-                            event.preventDefault()
-                            audioRecorder.startRecording()
-                        }}
-                        >
-                            Begin Recording
-                            <MagicWandIcon className='ml-2 text-green-500' />
-                        </button>
-                    ) : (
-                        <button 
-                        className="text-sm h-min inline-flex items-center content-center justify-center border border-neutral-700 hover:border-neutral-600 min-w-[200px] py-2 px-4 rounded-lg"
-                        onClick={(event) => {
-                            event.preventDefault()
-                            audioRecorder.stopRecording()
-                            audioRecorder.recordingBlob && addRecording(audioRecorder.recordingBlob)
-                        }}>
-                            Stop Recording
-                            <CircleIcon className='ml-2 text-red-500 bg-red-500 rounded-full animate-pulse' />
-                        </button>
-                    )}
-                </div>
+            <div className='flex flex-row items-center w-full px-2 mb-5 text-lg font-bold'>
+              <h1>Upload File</h1>
+            </div>
 
-                {audioRecorder.recordingBlob && docForm.title && (
-                    <div className='border border-neutral-700 mt-10 mx-auto w-full p-10 rounded-xl'>
-                        <div className='flex flex-row justify-between items-center'>
-                            <h1 className='text-lg font-bold text-green-400'>Recording Complete</h1>
-                            <p className='text-sm text-neutral-500'>Your recording is complete. Review and submit</p>
-                        </div>
+            <form className='flex flex-col justify-between w-full' encType='multipart/form-data' onSubmit={handleSubmit}>
+              {/* <div className='w-full mb-5'>
+                <input 
+                  type='text'
+                  placeholder='Title'
+                  className='w-full bg-transparent text-sm h-min inline-flex items-center content-center justify-center border border-neutral-700 hover:border-neutral-600 py-2 px-4 rounded-lg'
+                />
+              </div> */}
 
-                        <div className='mt-4 p-2'>
-                            <h1 className='text-md'>Document Title</h1>
-                            <p className='text-sm text-neutral-500'>{docForm.title}</p>
-                        </div>
+              <div className='flex flex-row justify-between items-center'>
+                <input
+                  type='file'
+                  accept='audio/*'
+                  onChange={handleFileChange}
+                  className="text-sm h-min inline-flex items-center content-center justify-center border border-neutral-700 hover:border-neutral-600 min-w-[200px] py-2 px-4 rounded-lg"
+                />
 
-                        <div className='flex flex-row justify-between mt-4 p-2 items-center'>
-                            <div className='block'>
-                                <h1 className='text-md'>Recording</h1>
-                                <p className='text-sm text-neutral-500'>{audioRecorder.recordingBlob.name}</p>
-                            </div>
-                            <div className='inline-flex items-center'>
-                                <audio src={URL.createObjectURL(audioRecorder.recordingBlob)} controls className='ml-8 rounded-md'></audio>
-                            </div>
-                        </div>
-
-                        <div className='w-full flex mt-4'>
-                            <button className='mx-auto text-sm h-min inline-flex items-center content-center justify-center border border-neutral-700 hover:border-neutral-600 min-w-[200px] py-2 px-4 rounded-lg' type='submit'>
-                                Submit
-                            </button>
-                        </div>
-                    </div>
-                )}
+                <button 
+                  className='text-sm h-min inline-flex items-center content-center justify-center border border-neutral-700 hover:border-neutral-600 min-w-[200px] py-2 px-4 rounded-lg' 
+                  type='submit'>
+                      Submit
+                </button>
+              </div>
             </form>
 
-            {audioRecorder.isRecording && (
-                <div className='flex flex-col items-center w-full mt-10'>
-                    <h1 className='mb-4 text-lg font-bold text-red-500 animate-pulse'>Recording</h1>
-                </div>
+            {audioFile && (
+              <div className='flex flex-col w-full mt-10'>
+                  <div className='flex flex-row items-center w-full px-2 mb-5 text-lg font-bold'>
+                      <h1>Preview</h1>
+                      <CheckIcon className='ml-5 text-green-500'/>
+                  </div>
+                
+                  <audio controls className='w-full'>
+                      <source src={URL.createObjectURL(audioFile)} />
+                  </audio>
+              </div>
             )}
         </div>
     )
