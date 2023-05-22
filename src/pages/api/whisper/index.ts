@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-// import { Configuration, OpenAIApi } from 'openai';
+import { Configuration, OpenAIApi } from 'openai';
 import formidable from "formidable";
+import fs from "fs";
 
 export const config = {
   api: {
@@ -8,11 +9,10 @@ export const config = {
   }
 }
 
-// const configuration = new Configuration({
-//   apiKey: process.env.OPENAI_API_KEY,
-// });
-
-// const openai = new OpenAIApi(configuration);
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
 function formidablePromise(req: NextApiRequest, opts?: Parameters<typeof formidable>[0]):
 Promise<{fields: formidable.Fields; files: formidable.Files}> {
@@ -23,6 +23,7 @@ Promise<{fields: formidable.Fields; files: formidable.Files}> {
           if (err) {
               return reject(err);
           }
+
           return accept({ fields, files });
       });
   });
@@ -30,36 +31,21 @@ Promise<{fields: formidable.Fields; files: formidable.Files}> {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { files } = await formidablePromise(req);
-  if (!files || !files.audioFile) return res.status(400).json({ error: "No audio file provided" })
+  if (!files.audioFile) return res.status(400).json({ error: "No audio file provided" })
 
-  const audioFile = files.audioFile as unknown as File
+  const audioFile = files.audioFile as formidable.File;
 
-  console.log(audioFile)
+  const fileName = `${audioFile.newFilename}.mp3`;
+  fs.writeFile(fileName, fs.readFileSync(audioFile.filepath), (err) => {
+    if (err) return res.status(500).json({ error: err });
+    console.log('File saved successfully:', fileName);
+  });
 
-  const whisperURL = "https://api.openai.com/v1/audio/transcriptions";
-
-  const headers = new Headers();
-  headers.append(
-    "Authorization",
-    `Bearer ${process.env.OPENAI_API_KEY}`
+  const response = await openai.createTranscription(
+    fs.createReadStream(fileName) as any,
+    "whisper-1"
   );
-  headers.append(
-    "Content-Type",
-    "multipart/form-data"
-  )
-  const formData = new FormData();
-  formData.append("file", audioFile);
-  formData.append("model", "whisper-1");
-    
-  const response = await fetch(whisperURL, {
-    method: "POST",
-    headers: headers,
-    body: formData
-  })
 
-  const data = await response.json()
-  console.log(data.error.message)
-
-  if (!data.ok) return res.status(400).json({ error: data.error.message });
-  else return res.status(200).json({ data: data });
+  if (response.status !== 200) return res.status(500).json({ error: response.statusText });
+  else return res.status(200).json(response.data);
 }

@@ -3,12 +3,10 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import { SessionProvider } from "next-auth/react"
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 
 import Navbar from '@/components/navbar'
 
 const inter = Inter({ subsets: ['latin'] })
-const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
@@ -23,17 +21,15 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     </Head>
     
     <SessionProvider session={session}>
-      <QueryClientProvider client={queryClient}>
-        <div className={`cursor-default flex h-full w-full flex-col items-center mx-auto ${inter.className}`}>
-          {session && (
-            <div className='sticky z-1 top-0 w-full max-w-7xl'>
-              <Navbar />
-            </div>
-          )}
+      <div className={`cursor-default flex h-full w-full flex-col items-center mx-auto ${inter.className}`}>
+        {session && (
+          <div className='sticky z-1 top-0 w-full max-w-7xl'>
+            <Navbar />
+          </div>
+        )}
 
-          <Component {...pageProps} />
-        </div>
-      </QueryClientProvider>
+        <Component {...pageProps} />
+      </div>
     </SessionProvider>
     </>
   )

@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react'
 import { CheckIcon } from '@radix-ui/react-icons'
 
 export default function NewDoc() {
-    const [ audioFile, setAudioFile ] = useState<File | null>(null)
+    const [ audioFile, setAudioFile ] = useState<Blob | null>(null)
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files && event.target.files[0];
@@ -83,6 +83,7 @@ export default function NewDoc() {
                   </audio>
               </div>
             )}
+
         </div>
     )
 }

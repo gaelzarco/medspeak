@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chengsokdara/use-whisper": "^0.2.0",
     "@prisma/client": "^4.14.0",
     "@radix-ui/react-avatar": "^1.0.2",
     "@radix-ui/react-dropdown-menu": "^2.0.4",
@@ -19,6 +20,7 @@
     "autoprefixer": "10.4.14",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
+    "fluent-ffmpeg": "^2.1.2",
     "formidable": "^2.1.1",
     "next": "13.4.2",
     "next-auth": "^4.22.1",
@@ -31,6 +33,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@types/fluent-ffmpeg": "^2.1.21",
     "@types/formidable": "^2.0.6",
     "prisma": "^4.14.0"
   }
