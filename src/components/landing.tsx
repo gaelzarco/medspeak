@@ -6,7 +6,7 @@ export default function Landing() {
         <div className="inline-flex min-w-screen w-full min-h-screen h-full">
             <div className="flex flex-col h-screen w-full">
                 <div className="flex h-min top-0 -mt-6 ml-5">
-                    <Image src='/medspeaklandinglogo.svg' height={100} width={200} alt='MedSpeak Logo'/>
+                    <Image src='/medspeaklandinglogo.svg' className='h-auto w-[200px]' height={100} width={200} alt='MedSpeak Logo'/>
                 </div>
 
                 <div className="flex flex-col w-3/4 m-auto pr-8">
