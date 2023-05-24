@@ -78,7 +78,7 @@ export default function NewDoc() {
                   type='text'
                   placeholder='Miyagi - 01/25/2023'
                   onChange={handleTitleChange}
-                  className='w-full bg-transparent text-sm inline-flex items-center content-center justify-center border border-neutral-700 hover:border-neutral-600 py-2 px-4 rounded-lg focus-within:outline-none mt-4'
+                  className='w-full bg-transparent text-sm inline-flex items-center content-center justify-center border border-neutral-700 hover:border-neutral-600 py-2 px-4 rounded-lg focus-within:outline-none mt-2'
                 />
               </div>
 
