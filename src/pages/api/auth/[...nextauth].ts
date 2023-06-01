@@ -1,19 +1,39 @@
+import { randomBytes, randomUUID } from "crypto"
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
+import { PrismaClient } from "@prisma/client";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 // import GitHubProvider from "next-auth/providers/github"
 
+const prisma = new PrismaClient({
+    log: ['query', 'info', 'warn'],
+    errorFormat: 'pretty',
+});
+
 export default NextAuth({
-    // Configure one or more authentication providers
+    adapter: PrismaAdapter(prisma),
     providers: [
-        // OAuth authentication providers...
-        // GitHubProvider({
-        //     clientId: process.env.GITHUB_ID as string,
-        //     clientSecret: process.env.GITHUB_SECRET as string
-        // }),
         GoogleProvider({
             clientId: process.env.GOOGLE_ID as string,
-            clientSecret: process.env.GOOGLE_SECRET as string
-        })
-        // ...add more providers here
+            clientSecret: process.env.GOOGLE_SECRET as string,
+        }),
     ],
+    session: {
+        strategy: 'database',
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+        updateAge: 24 * 60 * 60, // 24 hours
+        generateSessionToken: () => {
+            return randomUUID?.() ?? randomBytes(32).toString('hex')
+        },
+    },
+    callbacks: {
+        session: ({ session, user }) => ({
+            ...session,
+            user: {
+            ...session.user,
+            id: user.id,
+            },
+        }),
+    },
+    debug: process.env.NODE_ENV !== 'production',
 })

@@ -11,53 +11,86 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Organization {
-  id            String     @id @default(cuid())  @unique
-  name          String
-  patients      Patient[]
-  medicalProfessionals      MedicalProfessional[]
-  createdAt       DateTime    @default(now())
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
-model MedicalProfessional {
-  id            String       @id @default(cuid())   @unique
-  organizationId  String
-  googleId      String      @unique
-  createdAt       DateTime     @default(now())
-  updatedAt      DateTime    @updatedAt
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  organization Organization  @relation(fields: [organizationId], references: [id])
-  @@index([organizationId])
+  @@index([userId])
 }
 
-model Patient {
-  id            String    @id @default(cuid())    @unique
-  organizationId  String
-  medicalProfessionalId   String
-  firstName          String
-  lastName        String
-  disease        String
-  mentalHealth       String
-  drugs        String
-  procedures        String
-  anatomy        String
-  other      String
-  documents   Document[]
-  createdAt       DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+// model Organization {
+//   id            String     @id @default(cuid())  @unique
+//   name          String
+//   patients      Patient[]
+//   medicalProfessionals      User[]
+//   createdAt       DateTime    @default(now())
+// }
 
-  organization Organization @relation(fields: [organizationId], references: [id])
-  @@index([organizationId])
+model User {
+    id            String    @id @default(cuid())
+    // organizationId String
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+
+  // organization Organization  @relation(fields: [organizationId], references: [id])
+  // @@index([organizationId])
 }
 
-model Document {
-  id            String    @id @default(cuid())    @unique
-  title     String
-  authorId      String
-  patientId    String   
-  createdAt      DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+// model Patient {
+//   id            String    @id @default(cuid())    @unique
+  // organizationId  String
+  // medicalProfessionalId   String
+  // firstName          String
+  // lastName        String
+  // disease        String
+  // mentalHealth       String
+  // drugs        String
+  // procedures        String
+  // anatomy        String
+  // other      String
+  // documents   Document[]
+  // createdAt       DateTime @default(now())
+  // updatedAt      DateTime @updatedAt
 
-  patient Patient @relation(fields: [patientId], references: [id])
-  @@index([patientId])
-}
+  // organization Organization @relation(fields: [organizationId], references: [id])
+  // @@index([organizationId])
+// }
+
+// model Document {
+//   id            String    @id @default(cuid())    @unique
+//   title     String
+//   authorId      String
+//   patientId    String   
+//   createdAt      DateTime @default(now())
+//   updatedAt       DateTime @updatedAt
+
+//   patient Patient @relation(fields: [patientId], references: [id])
+//   @@index([patientId])
+// }

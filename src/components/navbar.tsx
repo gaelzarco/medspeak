@@ -1,26 +1,30 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 
+import { Inter } from 'next/font/google'
+const inter = Inter({ subsets: ['latin'] })
+
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
-  import { ChevronDownIcon, PersonIcon, ExitIcon } from "@radix-ui/react-icons"
+import { ChevronDownIcon, PersonIcon, ExitIcon } from "@radix-ui/react-icons"
 
 export default function Navbar() {
     const { data: session } = useSession()
+    const user = { ...session?.user }
 
     return (
-        <nav className="inline-flex justify-between p-4 pt-7 pb-7 w-full items-center bg-black">
+        <nav className="inline-flex justify-between p-4 pt-7 pb-7 w-full max-w-7xl items-center">
             <div className="inline-flex justify-self-start font-semibold text-md">
-                {session?.user && (
+                {user && (
                     <div className="inline-flex items-center">
                         <DropdownMenu>
-                            <DropdownMenuTrigger className="inline-flex w-max items-center my-auto focus-visible:outline-none">
+                            <DropdownMenuTrigger className={`inline-flex w-max items-center my-auto focus-visible:outline-none ${inter.className}`}>
                                 <Avatar>
-                                    <AvatarImage src={session.user.image as string} />
-                                    <AvatarFallback>{session.user.name?.toUpperCase().slice(0, 2)}</AvatarFallback>
+                                    <AvatarImage src={user.image as string} />
+                                    <AvatarFallback>{user.name?.toUpperCase().slice(0, 2)}</AvatarFallback>
                                 </Avatar>
-                                <p className="pl-4">{session.user.name}</p>
+                                <p className="pl-4">{user.name}</p>
                                 <ChevronDownIcon className="ml-4 h-4 w-4" />
                             </DropdownMenuTrigger>
 
