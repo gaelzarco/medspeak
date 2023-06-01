@@ -4,6 +4,7 @@ import { getSession } from 'next-auth/react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { CrumpledPaperIcon } from '@radix-ui/react-icons'
 import { DotWave } from '@uiball/loaders'
+import { motion } from 'framer-motion'
 
 export default function NewDoc() {
   const [ parent ] = useAutoAnimate()
@@ -54,23 +55,28 @@ export default function NewDoc() {
     };
 
     return (
-      <div ref={parent} className="flex flex-col w-full max-w-7xl p-5">
-          <div className='w-full px-2 pb-8'>
+      <motion.div ref={parent} className="flex flex-col w-full max-w-7xl p-5"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+          <div className='w-full rounded-xl p-5'>
               <h1 className='text-xl font-bold'>Create New Document</h1>
-              <p className='text-sm mt-2 text-neutral-400'>Here is where your journey begins. Provide a audio file and a title and let MedSpeak handle the rest. We use OpenAI's Whisper API to generate a transcript of your conversation.</p>
+              <p className='text-sm mt-2 text-neutral-400'>Here is where your journey begins. Provide an audio file of your conversation with patients and let MedSpeak handle the rest. We create a transcript of your conversation and highlight important medical information so you don't have to. Afterwards, you can review and save.</p>
           </div>
 
           {loading && (
             <div className='flex flex-col w-full mt-20'>
                 <div className='flex flex-col items-center w-full px-2 mb-4 content-center justify-center'>
                     <DotWave color='white' size={25}/>
-                    <h1 className='mt-2'>Processing</h1>
+                    <p className='text-neutral-400 mt-2'>Processing</p>
                 </div>
               </div>
           )}
 
           {!transcript && !loading && (
-            <form className='flex flex-col justify-between w-full mt-8' encType='multipart/form-data' onSubmit={handleSubmit}>
+            <form className='flex flex-col justify-between w-full mt-8 border border-neutral-700 rounded-xl p-5' encType='multipart/form-data' onSubmit={handleSubmit}>
               <div className='w-full mb-4 px-2'>
                 <label className=' text-lg font-semibold' htmlFor='title'>Title</label>
                 <input 
@@ -82,7 +88,7 @@ export default function NewDoc() {
                 />
               </div>
 
-            <div className='flex flex-col w-full px-2 mb-4 mt-8'>
+            <div className='flex flex-col w-full px-2 mb-4 mt-5'>
               <label className=' text-lg font-semibold' htmlFor='audio'>Upload Audio</label>
               <p className='text-sm mt-2 text-neutral-400'>Provide an .mp3 or .wav file and let MedSpeak handle the rest. We use OpenAI's Whisper API to create a transcript of the conversation between you and your partient. </p>
             </div>
@@ -116,7 +122,7 @@ export default function NewDoc() {
           )}
 
           {transcript && (
-            <div className='flex flex-col w-full mt-10 '>
+            <div className='flex flex-col w-full mt-10 p-5 border border-neutral-700 rounded-xl'>
               <div className='flex flex-row items-center w-full px-2 justify-between'>
                 <div  className='flex flex-row items-center'>
                   <h1 className='text-lg font-semibold'>Transcript</h1>
@@ -142,7 +148,7 @@ export default function NewDoc() {
             </div>
           )}
 
-      </div>
+      </motion.div>
   )
 }
 
