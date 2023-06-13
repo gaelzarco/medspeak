@@ -22,18 +22,19 @@
 </div>
 
 <!-- # [Moxie](https://moxie-x.vercel.app) -->
+
 # MedSpeak
-#### Streamline doctor and patient communication. 
+
+#### Streamline doctor and patient communication.
 
 #### LabLabAI - Create Your Own AI Start-Up: Episode 3
 
 ## Creators
+
 To learn more about our project, please feel free to contact us!
-  
 
 ✧ [Gael Zarco](https://github.com/gaelzarco) ✧
 
 ✧ [Chris James Galacgac](https://www.linkedin.com/in/crisjames-galacgac/) ✧
-
 
 </div>

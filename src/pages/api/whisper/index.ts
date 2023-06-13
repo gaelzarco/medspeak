@@ -1,13 +1,13 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { Configuration, OpenAIApi } from 'openai';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { Configuration, OpenAIApi } from "openai";
 import formidable from "formidable";
 import fs from "fs";
 
 export const config = {
   api: {
     bodyParser: false,
-  }
-}
+  },
+};
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -15,24 +15,30 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-function formidablePromise(req: NextApiRequest, opts?: Parameters<typeof formidable>[0]):
-Promise<{fields: formidable.Fields; files: formidable.Files}> {
+function formidablePromise(
+  req: NextApiRequest,
+  opts?: Parameters<typeof formidable>[0]
+): Promise<{ fields: formidable.Fields; files: formidable.Files }> {
   return new Promise((accept, reject) => {
-      const form = formidable(opts);
+    const form = formidable(opts);
 
-      form.parse(req, (err, fields, files) => {
-          if (err) {
-              return reject(err);
-          }
+    form.parse(req, (err, fields, files) => {
+      if (err) {
+        return reject(err);
+      }
 
-          return accept({ fields, files });
-      });
+      return accept({ fields, files });
+    });
   });
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { files } = await formidablePromise(req);
-  if (!files.audioFile) return res.status(400).json({ error: "No audio file provided" })
+  if (!files.audioFile)
+    return res.status(400).json({ error: "No audio file provided" });
 
   const audioFile = files.audioFile as formidable.File;
 
@@ -46,6 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     "whisper-1"
   );
 
-  if (response.status !== 200) return res.status(500).json({ error: response.data });
+  if (response.status !== 200)
+    return res.status(500).json({ error: response.data });
   else return res.status(200).json(response.data);
 }
