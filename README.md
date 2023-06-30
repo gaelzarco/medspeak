@@ -27,8 +27,6 @@
 
 #### Streamline doctor and patient communication.
 
-#### LabLabAI - Create Your Own AI Start-Up: Episode 3
-
 ## Creators
 
 To learn more about our project, please feel free to contact us!
